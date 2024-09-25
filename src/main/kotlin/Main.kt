@@ -6,6 +6,7 @@ import java.awt.Toolkit
 import java.awt.event.WindowAdapter
 import java.awt.event.WindowEvent
 import java.io.*
+import java.nio.file.FileSystems
 import java.util.*
 import java.util.Timer
 import javax.imageio.ImageIO
@@ -18,6 +19,7 @@ import kotlin.concurrent.scheduleAtFixedRate
 *
 *             ☺  ☺  ☺
 */
+val file_separator: String = FileSystems.getDefault().separator
 fun main(args: Array<String>) { // ☻ ☺
     SimpleAudioPlayer().play() // ♩ Never gonna give you up ♫
     DisplayImage() // rick
@@ -150,7 +152,7 @@ class SimpleAudioPlayer { // *most* of this class is copy/pasted from the intern
     }
 
     companion object {
-        var filePath: String = "${DisplayImage().getPath().removeSuffix("IdiotRoll.jar")}res\\roll.wav"
+        var filePath: String = "${DisplayImage().getPath().removeSuffix("IdiotRoll.jar")}${file_separator}res${file_separator}roll.wav"
         fun main(args: Array<String?>?) {
             try {
                 filePath = this::class.java.getResource("/roll.wav")?.path ?: ""
@@ -188,8 +190,8 @@ class DisplayImage { // The base code of this class was mostly taken from StackO
 //        println("path is: ${getPath()}") // Used for debugging
         val screenWidth = Toolkit.getDefaultToolkit().screenSize.width // gets the size of the screen
         val screenHeight = Toolkit.getDefaultToolkit().screenSize.height
-        val rick = "${getPath().removeSuffix("IdiotRoll.jar")}res\\roll.gif"//this.javaClass.getResourceAsStream("/1.jpg")// getResource("/1.jpg")?.path ?: "" // <- past versions of this code that used to work in other conditions.
-//        val white = "${getPath().removeSuffix("IdiotRoll.jar")}res\\2.jpg"//this.javaClass.getResourceAsStream("/2.jpg")//?.path ?: "" //<- this would have worked when running via Gradle with the IDE but not with a compiled jar file. the current code works with the jar file assuming you arrange the files correctly as I have, and don't rename the files.
+        val rick = "${getPath().removeSuffix("${file_separator}IdiotRoll.jar")}${file_separator}res${file_separator}roll.gif"//this.javaClass.getResourceAsStream("/1.jpg")// getResource("/1.jpg")?.path ?: "" // <- past versions of this code that used to work in other conditions.
+//        val white = "${getPath().removeSuffix("IdiotRoll.jar")}res\${file_separator}2.jpg"//this.javaClass.getResourceAsStream("/2.jpg")//?.path ?: "" //<- this would have worked when running via Gradle with the IDE but not with a compiled jar file. the current code works with the jar file assuming you arrange the files correctly as I have, and don't rename the files.
 //        val cldr = this.javaClass.classLoader // I think this does relatively the same thing as my getPath() function. I added this and the fallowing 3 lines when making the rickroll version so I could animate the GIF. Its kinda redundant tho but I'm too lazy to just combine it rn lol
 //        val imageURL = cldr.getResource("roll.gif") // this would replace value rick if it wasn't in a jar, ie running via Gradle from the IDE instead of with a compiled jar.  There would be a few other things that I left commented out that would replace the current code in that scenario too.
         val img = ImageIO.read(File(rick)) // the gif
